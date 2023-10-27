@@ -12,15 +12,28 @@ tmpl.innerHTML = `
     <script id="oView" name="oView" type="sapui5/xmlview">
       <mvc:View
         controllerName="ifm.calendar"
-        xmlns:core="sap.ui.core"
-        xmlns:m="sap.m"
-        xmlns:mvc="sap.ui.core.mvc">
-        <m:VBox>        
-          <m:FlexBox
-            height="100%">
-
-          </m:FlexBox>
-        </m:VBox>
+        xmlns:l="sap.ui.layout"
+        xmlns:u="sap.ui.unified"
+        xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m"
+        class="viewPadding">
+        <l:VerticalLayout>
+          <u:Calendar
+              id="calendar"
+              select="handleCalendarSelect" />
+          <Button
+              press="handleSelectToday"
+              text="Select Today" />
+          <l:HorizontalLayout>
+            <Label
+                text="Selected Date (yyyy-mm-dd):"
+                class="labelMarginLeft" />
+            <Text
+                id="selectedDate"
+                text="No Date Selected"
+                class="labelMarginLeft"/>
+          </l:HorizontalLayout>
+        </l:VerticalLayout>
       </mvc:View>
     </script>
   `;
@@ -71,11 +84,6 @@ export default class IFMCalendar extends HTMLElement {
     ];
   }
 
-  async initCalendar(that) {
-    var that_ = that;
-    
-  }
-
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue != newValue) {
       this[name] = newValue;
@@ -94,51 +102,45 @@ export default class IFMCalendar extends HTMLElement {
 
       //### Controller ###
       sap.ui.define([
-        "jquery.sap.global",
-        "sap/f/Card",
-        "sap/ui/core/mvc/Controller"
-      ], function (jQuery, Controller) {
+        'sap/ui/core/mvc/Controller',
+        'sap/ui/unified/DateRange',
+        'sap/ui/core/format/DateFormat',
+        'sap/ui/core/library',
+        'sap/ui/core/date/UI5Date'
+      ], function (Controller, DateRange, DateFormat, coreLibrary, UI5Date) {
         "use strict";
 
+        var CalendarType = coreLibrary.CalendarType;
+
         return Controller.extend("ifm.calendar", {
+          oFormatYyyymmdd: null,
 
-          onInit: function (oEvent) {
+          onInit: function() {
+            this.oFormatYyyymmdd = DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
+          },
+ 
+          handleCalendarSelect: function(oEvent) {
+            var oCalendar = oEvent.getSource();
+      
+            this._updateText(oCalendar);
           },
 
-          onPress: function (oEvent) {
-            const authURL = encodeURI(`${that_._export_settings.DSP_oAuthURL}?response_type=code&client_id=${that_._export_settings.DSP_clientID}`);
-            var sFrame = `<iframe id='authorizationFrame' src='${authURL}' style='width: 600px; height: 600px;'></iframe>`;
-            var ui5Frame = new sap.ui.core.HTML({
-              content: [sFrame]
-            });
-
-            var ui5Card = new sap.f.Card({
-              content: [ui5Frame]
-            });
-
-            var ui5ScrollContainer = new sap.m.ScrollContainer({
-              height: "600px",
-              width: "600px",
-              content: [ui5Card]
-            });
-
-            var ui5Dialog = new sap.m.Dialog({
-              title: "Authorization Code",
-              content: [ui5ScrollContainer],
-              beginButton: new sap.m.Button({
-                text: "OK",
-                press: function () {
-                  ui5Dialog.close();
-                }.bind(this)
-              }),
-              afterClose: function () {
-                ui5Dialog.destroyContent();
-              }
-            });
-
-            ui5Dialog.open();
-
+          _updateText: function(oCalendar) {
+            var oText = this.byId("selectedDate"),
+              aSelectedDates = oCalendar.getSelectedDates(),
+              oDate = aSelectedDates[0].getStartDate();
+      
+            oText.setText(this.oFormatYyyymmdd.format(oDate));
           },
+
+          handleSelectToday: function() {
+            var oCalendar = this.byId("calendar");
+      
+            oCalendar.removeAllSelectedDates();
+            oCalendar.addSelectedDate(new DateRange({startDate: UI5Date.getInstance()}));
+            this._updateText(oCalendar);
+          }
+
         });
       });
 
