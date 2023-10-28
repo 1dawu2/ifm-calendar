@@ -102,21 +102,17 @@ export default class IFMCalendar extends HTMLElement {
 
       //### Controller ###
       sap.ui.define([
-        'sap/ui/core/mvc/Controller',
-        'sap/ui/unified/DateRange',
-        'sap/ui/core/format/DateFormat',
-        'sap/ui/core/library',
-        'sap/ui/core/date/UI5Date'
-      ], function (Controller, DateRange, DateFormat, coreLibrary, UI5Date) {
+        'sap/ui/core/mvc/Controller'
+      ], function (Controller) {
         "use strict";
 
-        var CalendarType = coreLibrary.CalendarType;
+        var CalendarType = sap.ui.core.CalendarType;
 
         return Controller.extend("ifm.calendar", {
           oFormatYyyymmdd: null,
 
           onInit: function() {
-            this.oFormatYyyymmdd = DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
+            this.oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
           },
  
           handleCalendarSelect: function(oEvent) {
@@ -137,7 +133,7 @@ export default class IFMCalendar extends HTMLElement {
             var oCalendar = this.byId("calendar");
       
             oCalendar.removeAllSelectedDates();
-            oCalendar.addSelectedDate(new DateRange({startDate: UI5Date.getInstance()}));
+            oCalendar.addSelectedDate(new sap.ui.unified.DateRange({startDate: sap/ui/core/date/UI5Date.getInstance}));
             this._updateText(oCalendar);
           }
 
