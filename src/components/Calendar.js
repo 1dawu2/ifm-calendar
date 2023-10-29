@@ -15,7 +15,6 @@ tmpl.innerHTML = `
         xmlns:l="sap.ui.layout"
         xmlns:u="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
-        xmlns="sap.m"
         class="viewPadding">
         <l:VerticalLayout class="sapUiContentPadding>
           <u:Calendar
@@ -25,15 +24,14 @@ tmpl.innerHTML = `
           <l:HorizontalLayout allowWrapping="true">
             <Button
               press="handleSelectToday"
-              text="Select Today" />
-
+              text="Select Today"
+              class="sapUiSmallMarginEnd" />
             <Label
                 text="Selected Date (yyyy-mm-dd):"
-                class="labelMarginLeft" />
+                class="sapUiSmallMarginEnd" />
             <Text
                 id="selectedDate"
-                text="No Date Selected"
-                class="labelMarginLeft"/>
+                text="No Date Selected"/>
           </l:HorizontalLayout>
         </l:VerticalLayout>
       </mvc:View>
