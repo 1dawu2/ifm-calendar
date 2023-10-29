@@ -15,6 +15,7 @@ tmpl.innerHTML = `
         xmlns:l="sap.ui.layout"
         xmlns:u="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
+        xmlns="sap.m"
         class="viewPadding">
         <l:VerticalLayout class="sapUiContentPadding">
           <u:Calendar
