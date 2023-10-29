@@ -126,7 +126,7 @@ export default class IFMCalendar extends HTMLElement {
           },
 
           _initCalendar: function() {
-            var hd = new Holidays(this._export_settings.Calendar_Country)
+            var hd = new Holidays(that_._export_settings.Calendar_Country)
             var oCalendar = this.byId("calendar");
             console.log("Calendar:");
             console.log(oCalendar);
