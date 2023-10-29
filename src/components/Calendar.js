@@ -115,8 +115,8 @@ export default class IFMCalendar extends HTMLElement {
           onInit: function() {          
             this.oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
             this.oFormatYyyy = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy", calendarType: CalendarType.Gregorian});
-            this._initCalendar();
-            console.log("init calendar:");
+            //this._initCalendar();
+            //console.log("init calendar:");
           },
  
           handleCalendarSelect: function(oEvent) {
