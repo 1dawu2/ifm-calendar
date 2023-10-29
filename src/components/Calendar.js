@@ -1,6 +1,5 @@
 
 let Holidays = require('date-holidays')
-let hd = new Holidays('DE')
 let _shadowRoot;
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
@@ -51,7 +50,7 @@ export default class IFMCalendar extends HTMLElement {
     _shadowRoot.appendChild(tmpl.content.cloneNode(true));
 
     this._export_settings = {};
-    this._export_settings.Calendar_Country = "";
+    this._export_settings.Calendar_Country = "DE";
 
   }
 
@@ -117,8 +116,7 @@ export default class IFMCalendar extends HTMLElement {
             this.oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
             this.oFormatYyyy = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy", calendarType: CalendarType.Gregorian});
             this._initCalendar();
-            console.log('init calendar:');
-            console.log(hd);
+            console.log("init calendar:");
           },
  
           handleCalendarSelect: function(oEvent) {
@@ -128,10 +126,14 @@ export default class IFMCalendar extends HTMLElement {
           },
 
           _initCalendar: function() {
+            var hd = new Holidays(this._export_settings.Calendar_Country)
             var oCalendar = this.byId("calendar");
+            console.log("Calendar:");
+            console.log(oCalendar);
             aSelectedDates = oCalendar.getSelectedDates(),
             oDate = aSelectedDates[0].getStartDate();
             hd.getHolidays(this.oFormatYyyy.format(oDate));
+            console.log(hd);
           },
 
           _updateText: function(oCalendar) {
