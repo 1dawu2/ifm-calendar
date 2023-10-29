@@ -17,14 +17,16 @@ tmpl.innerHTML = `
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m"
         class="viewPadding">
-        <l:VerticalLayout>
+        <l:VerticalLayout class="sapUiContentPadding>
           <u:Calendar
               id="calendar"
+              months="2"
               select="handleCalendarSelect" />
-          <Button
+          <l:HorizontalLayout allowWrapping="true">
+            <Button
               press="handleSelectToday"
               text="Select Today" />
-          <l:HorizontalLayout>
+
             <Label
                 text="Selected Date (yyyy-mm-dd):"
                 class="labelMarginLeft" />
@@ -110,11 +112,14 @@ export default class IFMCalendar extends HTMLElement {
 
         return Controller.extend("ifm.calendar", {
           oFormatYyyymmdd: null,
+          oFormatYyyy: null,
 
-          onInit: function() {
-            console.log(hd);
-
+          onInit: function() {          
             this.oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
+            this.oFormatYyyy = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy", calendarType: CalendarType.Gregorian});
+            this._initCalendar();
+            console.log('init calendar:');
+            console.log(hd);
           },
  
           handleCalendarSelect: function(oEvent) {
@@ -123,11 +128,17 @@ export default class IFMCalendar extends HTMLElement {
             this._updateText(oCalendar);
           },
 
+          _initCalendar: function() {
+            var oCalendar = this.byId("calendar");
+            aSelectedDates = oCalendar.getSelectedDates(),
+            oDate = aSelectedDates[0].getStartDate();
+            hd.getHolidays(this.oFormatYyyy.format(oDate));
+          },
+
           _updateText: function(oCalendar) {
             var oText = this.byId("selectedDate"),
-              aSelectedDates = oCalendar.getSelectedDates(),
-              oDate = aSelectedDates[0].getStartDate();
-      
+            aSelectedDates = oCalendar.getSelectedDates(),
+            oDate = aSelectedDates[0].getStartDate();
             oText.setText(this.oFormatYyyymmdd.format(oDate));
           },
 
@@ -135,8 +146,9 @@ export default class IFMCalendar extends HTMLElement {
             var oCalendar = this.byId("calendar");
       
             oCalendar.removeAllSelectedDates();
-            oCalendar.addSelectedDate(new sap.ui.unified.DateRange({startDate: sap/ui/core/date/UI5Date.getInstance}));
+            oCalendar.addSelectedDate(new sap.ui.unified.DateRange({startDate: sap.ui.core.date.UniversalDate.getInstance()}));
             this._updateText(oCalendar);
+            this._initCalendar();
           }
 
         });
