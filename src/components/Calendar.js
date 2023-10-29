@@ -1,6 +1,6 @@
 
 let Holidays = require('date-holidays')
-let hd = new Holidays()
+let hd = new Holidays('DE')
 let _shadowRoot;
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
@@ -112,6 +112,8 @@ export default class IFMCalendar extends HTMLElement {
           oFormatYyyymmdd: null,
 
           onInit: function() {
+            console.log(hd);
+
             this.oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
           },
  
