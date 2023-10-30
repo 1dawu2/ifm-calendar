@@ -149,7 +149,7 @@ export default class IFMCalendar extends HTMLElement {
             var oCalendar = this.byId("calendar");
       
             oCalendar.removeAllSelectedDates();
-            oCalendar.addSelectedDate(new sap.ui.unified.DateRange({startDate: sap.ui.core.date.UniversalDate.getInstance()}));
+            oCalendar.addSelectedDate(new sap.ui.unified.DateRange({startDate: sap.ui.core.format.DateFormat.getDateInstance()}));
             this._updateText(oCalendar);
             oCalendar.focu
           }
