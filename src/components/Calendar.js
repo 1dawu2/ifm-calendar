@@ -141,6 +141,11 @@ export default class IFMCalendar extends HTMLElement {
             if (aSelectedDates.length > 0) {
               oDate = aSelectedDates[0].getStartDate();
               oText.setText(this.oFormatYyyymmdd.format(oDate));
+              if (that_.hd.isHoliday(this.oFormatYyyymmdd.format(oDate)) === false) {
+                console.log('check if holidy: selected day is not a public holiday');
+              } else {
+                console.log('check if holiday: selected day is a public holiday');
+              };
             } else {
               oText.setValue("No Date Selected");
             };
@@ -152,7 +157,7 @@ export default class IFMCalendar extends HTMLElement {
             oCalendar.removeAllSelectedDates();
             oCalendar.addSelectedDate(new sap.ui.unified.DateRange({startDate: sap.ui.core.format.DateFormat.getDateInstance()}));
             this._updateText(oCalendar);
-            oCalendar.focu
+            oCalendar.focusDate(new Date());
           }
 
         });
