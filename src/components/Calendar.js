@@ -14,26 +14,27 @@ tmpl.innerHTML = `
         xmlns:l="sap.ui.layout"
         xmlns:u="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
-        xmlns="sap.m"
-        height="100%"
-        width="100%">
-        <Page title="Calendar">
-          <content>
-            <VBox>
-              <u:Calendar
-                id="calendar"
-                months="2"
-                select="handleCalendarSelect" />
-              <Button
-                press="handleSelectToday"
-                text="Select Today"
-                class="sapUiSmallMarginEnd" />
-              <Text
-                  id="selectedDate"
-                  text="No Date Selected"/>
-            </VBox>
-          </content>
-        </Page>
+        xmlns="sap.m">
+        <m:Page title="Calendar">
+          <m:content>
+            <m:VBox>
+              <m:FlexBox
+              height="100%">
+                <u:Calendar
+                  id="calendar"
+                  months="2"
+                  select="handleCalendarSelect" />
+                <m:Button
+                  press="handleSelectToday"
+                  text="Select Today"
+                  class="sapUiSmallMarginEnd" />
+                <m:Text
+                    id="selectedDate"
+                    text="No Date Selected"/>
+              </m:FlexBox>
+            </m:VBox>
+          </m:content>
+        </m:Page>
       </mvc:View>
     </script>
   `;
