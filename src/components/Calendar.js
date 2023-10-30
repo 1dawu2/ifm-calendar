@@ -125,7 +125,8 @@ export default class IFMCalendar extends HTMLElement {
           },
 
           handleCalendarSelect: function(oEvent) {
-            var oCalendar = oEvent.getSource();
+            //var oCalendar = oEvent.getSource();
+            var oCalendar = this.byId("calendar");
       
             this._updateText(oCalendar);
           },
