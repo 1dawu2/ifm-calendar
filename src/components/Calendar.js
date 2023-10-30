@@ -45,7 +45,7 @@ export default class IFMCalendar extends HTMLElement {
 
     this._export_settings = {};
     this._export_settings.Calendar_Country = "DE";
-    this.hd = new Holidays(that_._export_settings.Calendar_Country);
+    this.hd = new Holidays(this._export_settings.Calendar_Country);
     console.log(this.hd);
 
   }
