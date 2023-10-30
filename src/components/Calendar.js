@@ -15,25 +15,33 @@ tmpl.innerHTML = `
         xmlns:u="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns:m="sap.m">
-        <m:VBox>
+        <l:VerticalLayout
+          class="sapUiContentPadding"
+          width="100%">
+          <l:content>
             <u:Calendar
               id="calendar"
+              legend="calendarHolidays"
+              intervalSelection="true"
               singleSelection="true"
               specialDates="{path: '/holidays'}"
               months="2"
               select="handleCalendarSelect" />
-            <u:specialDates>
-              <u:DateTypeRange 
-                startDate="{parts: ['date/day', 'date/month', 'date/year'], formatter:'assets.util.mFormatter.formatCalDate'}" type="Type09" />
-            </u:specialDates>
-            <m:Button
-              press="onBtnPress"
-              text="Select Today"
-              class="sapUiSmallMarginEnd" />
-            <m:Text
-                id="selectedDate"
-                text="No Date Selected"/>
-        </m:VBox>
+                <u:specialDates>
+                  <u:DateTypeRange 
+                    startDate="{parts: ['date/day', 'date/month', 'date/year'], formatter:'assets.util.mFormatter.formatCalDate'}" type="Type09" />
+                </u:specialDates>
+                <u:CalendarLegend id="calendarHolidays"/>
+                <ToggleButton text="Special Days" press="handleShowSpecialDays"/>
+                <m:Button
+                  press="onBtnPress"
+                  text="Select Today"
+                  class="sapUiSmallMarginEnd" />
+                <m:Text
+                    id="selectedDate"
+                    text="No Date Selected"/>
+          </l:content>
+        </l:VerticalLayout>
       </mvc:View>
     </script>
   `;
@@ -131,6 +139,31 @@ export default class IFMCalendar extends HTMLElement {
         
         
           onExit: function() {        
+          },
+
+          handleShowSpecialDays: function(oEvent) {
+            var oCal = this.byId("calendar"),
+              oLeg = this.byId("calendarHolidays"),
+              bPressed = oEvent.getParameter("pressed");
+      
+            if (bPressed) {
+              oRefDate = UI5Date.getInstance();
+              for (var i = 1; i <= 10; i++) {
+                var sType = "";
+                if (i < 10) {
+                  sType = "Type0" + i;
+                } else {
+                  sType = "Type" + i;
+                }
+                oLeg.addItem(new CalendarLegendItem({
+                  type: sType,
+                  text : "Placeholder " + i
+                }));
+              };      
+            } else {
+              oCal.destroySpecialDates();
+              oLeg.destroyItems();
+            }
           },
 
           handleCalendarSelect: function(oEvent) {
