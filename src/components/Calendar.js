@@ -14,7 +14,7 @@ tmpl.innerHTML = `
         xmlns:l="sap.ui.layout"
         xmlns:u="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
-        xmlns="sap.m">
+        xmlns:m="sap.m">
         <m:Page title="Calendar">
           <m:content>
             <m:VBox>
