@@ -15,26 +15,19 @@ tmpl.innerHTML = `
         xmlns:u="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns:m="sap.m">
-        <m:Page title="Calendar">
-          <m:content>
-            <m:VBox>
-              <m:FlexBox
-              height="100%">
-                <u:Calendar
-                  id="calendar"
-                  months="2"
-                  select="handleCalendarSelect" />
-                <m:Button
-                  press="handleSelectToday"
-                  text="Select Today"
-                  class="sapUiSmallMarginEnd" />
-                <m:Text
-                    id="selectedDate"
-                    text="No Date Selected"/>
-              </m:FlexBox>
-            </m:VBox>
-          </m:content>
-        </m:Page>
+        <m:VBox>
+            <u:Calendar
+              id="calendar"
+              months="2"
+              select="handleCalendarSelect" />
+            <m:Button
+              press="onBtnPress"
+              text="Select Today"
+              class="sapUiSmallMarginEnd" />
+            <m:Text
+                id="selectedDate"
+                text="No Date Selected"/>
+        </m:VBox>
       </mvc:View>
     </script>
   `;
@@ -52,6 +45,8 @@ export default class IFMCalendar extends HTMLElement {
 
     this._export_settings = {};
     this._export_settings.Calendar_Country = "DE";
+    this.hd = new Holidays(that_._export_settings.Calendar_Country);
+    console.log(this.hd);
 
   }
 
@@ -116,41 +111,47 @@ export default class IFMCalendar extends HTMLElement {
           onInit: function() {          
             this.oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
             this.oFormatYyyy = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy", calendarType: CalendarType.Gregorian});
-            //this._initCalendar();
-            //console.log("init calendar:");
           },
  
+          onBeforeRendering: function() {
+          },
+        
+        
+          onAfterRendering: function() {        
+          },
+        
+        
+          onExit: function() {        
+          },
+
           handleCalendarSelect: function(oEvent) {
             var oCalendar = oEvent.getSource();
       
             this._updateText(oCalendar);
           },
 
-          _initCalendar: function() {
-            var hd = new Holidays(that_._export_settings.Calendar_Country)
-            var oCalendar = this.byId("calendar");
-            console.log("Calendar:");
-            console.log(oCalendar);
-            aSelectedDates = oCalendar.getSelectedDates(),
-            oDate = aSelectedDates[0].getStartDate();
-            hd.getHolidays(this.oFormatYyyy.format(oDate));
-            console.log(hd);
+          _initCalendar: function() {            
           },
 
           _updateText: function(oCalendar) {
-            var oText = this.byId("selectedDate"),
-            aSelectedDates = oCalendar.getSelectedDates(),
-            oDate = aSelectedDates[0].getStartDate();
-            oText.setText(this.oFormatYyyymmdd.format(oDate));
+            var oText = this.byId("selectedDate");
+            aSelectedDates = oCalendar.getSelectedDates();
+            var oDate;
+            if (aSelectedDates.length > 0) {
+              oDate = aSelectedDates[0].getStartDate();
+              oText.setText(this.oFormatYyyymmdd.format(oDate));
+            } else {
+              oText.setValue("No Date Selected");
+            };
           },
 
-          handleSelectToday: function() {
+          onBtnPress: function() {
             var oCalendar = this.byId("calendar");
       
             oCalendar.removeAllSelectedDates();
             oCalendar.addSelectedDate(new sap.ui.unified.DateRange({startDate: sap.ui.core.date.UniversalDate.getInstance()}));
             this._updateText(oCalendar);
-            this._initCalendar();
+            oCalendar.focu
           }
 
         });
