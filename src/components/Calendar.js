@@ -15,25 +15,25 @@ tmpl.innerHTML = `
         xmlns:u="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m"
-        class="viewPadding">
-        <l:VerticalLayout class="sapUiContentPadding">
-          <u:Calendar
-              id="calendar"
-              months="2"
-              select="handleCalendarSelect" />
-          <l:HorizontalLayout allowWrapping="true">
-            <Button
-              press="handleSelectToday"
-              text="Select Today"
-              class="sapUiSmallMarginEnd" />
-            <Label
-                text="Selected Date (yyyy-mm-dd):"
+        height="100%"
+        width="100%">
+        <Page title="Calendar">
+          <content>
+            <VBox>
+              <u:Calendar
+                id="calendar"
+                months="2"
+                select="handleCalendarSelect" />
+              <Button
+                press="handleSelectToday"
+                text="Select Today"
                 class="sapUiSmallMarginEnd" />
-            <Text
-                id="selectedDate"
-                text="No Date Selected"/>
-          </l:HorizontalLayout>
-        </l:VerticalLayout>
+              <Text
+                  id="selectedDate"
+                  text="No Date Selected"/>
+            </VBox>
+          </content>
+        </Page>
       </mvc:View>
     </script>
   `;
