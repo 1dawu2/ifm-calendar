@@ -18,8 +18,14 @@ tmpl.innerHTML = `
         <m:VBox>
             <u:Calendar
               id="calendar"
+              singleSelection="true"
+              specialDates="{path: '/holidays'}"
               months="2"
               select="handleCalendarSelect" />
+            <u:specialDates>
+              <u:DateTypeRange 
+                startDate="{parts: ['date/day', 'date/month', 'date/year'], formatter:'assets.util.mFormatter.formatCalDate'}" type="Type09" />
+            </u:specialDates>
             <m:Button
               press="onBtnPress"
               text="Select Today"
@@ -111,6 +117,9 @@ export default class IFMCalendar extends HTMLElement {
           onInit: function() {          
             this.oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
             this.oFormatYyyy = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy", calendarType: CalendarType.Gregorian});
+            var modelHolidays = new sap.ui.model.json.JSONModel();
+            modelHolidays.setData(this._initCalendar());
+            sap.ui.getCore().setModel(modelHolidays);
           },
  
           onBeforeRendering: function() {
@@ -131,7 +140,8 @@ export default class IFMCalendar extends HTMLElement {
             this._updateText(oCalendar);
           },
 
-          _initCalendar: function() {            
+          _initCalendar: function() {
+            return that_.hd.getHolidays(2023); // TODO: replace constant selection with year selection
           },
 
           _updateText: function(oCalendar) {
