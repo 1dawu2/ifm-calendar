@@ -136,7 +136,7 @@ export default class IFMCalendar extends HTMLElement {
 
           _updateText: function(oCalendar) {
             var oText = this.byId("selectedDate");
-            aSelectedDates = oCalendar.getSelectedDates();
+            var aSelectedDates = oCalendar.getSelectedDates();
             var oDate;
             if (aSelectedDates.length > 0) {
               oDate = aSelectedDates[0].getStartDate();
