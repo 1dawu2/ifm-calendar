@@ -136,7 +136,7 @@ export default class IFMCalendar extends HTMLElement {
             //   // Add more special dates as needed
             // ];
 
-            var aSpecialDates = _initCalendar();
+            var aSpecialDates = this._initCalendar();
       
             var aDateRanges = aSpecialDates.map(function (specialDate) {
               return new sap.ui.unified.DateTypeRange({
