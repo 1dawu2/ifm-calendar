@@ -11,37 +11,14 @@ tmpl.innerHTML = `
     <script id="oView" name="oView" type="sapui5/xmlview">
       <mvc:View
         controllerName="ifm.calendar"
-        xmlns:l="sap.ui.layout"
         xmlns:u="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
-        xmlns:m="sap.m">
-        <l:VerticalLayout
-          class="sapUiContentPadding"
-          width="100%">
-          <l:content>
-            <u:Calendar
-              id="calendar"
-              legend="calendarHolidays"
-              intervalSelection="true"
-              singleSelection="true"
-              specialDates="{path: '/holidays'}"
-              months="2"
-              select="handleCalendarSelect" />
-                <u:specialDates>
-                  <u:DateTypeRange 
-                    startDate="{parts: ['date/day', 'date/month', 'date/year'], formatter:'assets.util.mFormatter.formatCalDate'}" type="Type09" />
-                </u:specialDates>
-                <u:CalendarLegend id="calendarHolidays"/>
-                <ToggleButton text="Special Days" press="handleShowSpecialDays"/>
-                <m:Button
-                  press="onBtnPress"
-                  text="Select Today"
-                  class="sapUiSmallMarginEnd" />
-                <m:Text
-                    id="selectedDate"
-                    text="No Date Selected"/>
-          </l:content>
-        </l:VerticalLayout>
+        xmlns="sap.m">
+        <Page title="Select milestone date:">
+          <content>
+            <u:Calendar id="calendar" width="100%"/>
+          </content>
+        </Page>
       </mvc:View>
     </script>
   `;
@@ -57,10 +34,13 @@ export default class IFMCalendar extends HTMLElement {
 
     _shadowRoot.appendChild(tmpl.content.cloneNode(true));
 
+    _id = createGuid();
+
+    _shadowRoot.querySelector("#oView").id = _id + "_oView";
+
     this._export_settings = {};
     this._export_settings.Calendar_Country = "DE";
     this.hd = new Holidays(this._export_settings.Calendar_Country);
-    console.log(this.hd);
 
   }
 
@@ -74,6 +54,9 @@ export default class IFMCalendar extends HTMLElement {
   }
 
   onCustomWidgetBeforeUpdate(changedProperties) {
+    // if ("designMode" in changedProperties) {
+    //   this._designMode = changedProperties["designMode"];
+    // };
   }
 
   onCustomWidgetAfterUpdate(changedProperties) {
@@ -97,7 +80,7 @@ export default class IFMCalendar extends HTMLElement {
   attributeChangedCallback(name, oldValue, newValue) {
     if (oldValue != newValue) {
       this[name] = newValue;
-    }
+    };
   }
 
   buildUI(that) {
@@ -125,9 +108,7 @@ export default class IFMCalendar extends HTMLElement {
           onInit: function() {          
             this.oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian});
             this.oFormatYyyy = sap.ui.core.format.DateFormat.getInstance({pattern: "yyyy", calendarType: CalendarType.Gregorian});
-            var modelHolidays = new sap.ui.model.json.JSONModel();
-            modelHolidays.setData(this._initCalendar());
-            sap.ui.getCore().setModel(modelHolidays);
+            this._addSpecialDates();
           },
  
           onBeforeRendering: function() {
@@ -139,6 +120,35 @@ export default class IFMCalendar extends HTMLElement {
         
         
           onExit: function() {        
+          },
+
+          _addSpecialDates: function() {
+            var oView = this.getView();
+            var oCalendar = oView.byId("calendar");
+      
+            // Example: Adding Special Dates
+            // var aSpecialDates = [
+            //   {
+            //     date: new Date("2023", "11", "1"), // Year, Month (0-based), Day
+            //     type: sap.ui.unified.DateType.Type01 // Example Type01 for New Year
+            //   },
+            //   {
+            //     date: new Date("2023", "31", "10"),
+            //     type: sap.ui.unified.DateType.Type02 // Example Type02 for a specific date
+            //   }
+            //   // Add more special dates as needed
+            // ];
+
+            var aSpecialDates = _initCalendar();
+      
+            var aDateRanges = aSpecialDates.map(function (specialDate) {
+              return new sap.ui.unified.DateTypeRange({
+                startDate: specialDate.date,
+                type: specialDate.type
+              });
+            });
+      
+            oCalendar.addSpecialDates(aDateRanges);
           },
 
           handleShowSpecialDays: function(oEvent) {
@@ -174,7 +184,15 @@ export default class IFMCalendar extends HTMLElement {
           },
 
           _initCalendar: function() {
-            return that_.hd.getHolidays(2023); // TODO: replace constant selection with year selection
+            const holidayCalendar = that_.hd.getHolidays(2023); // TODO: replace constant selection with year selection
+            // Create and set the model for special dates
+            const oModel = new sap.ui.model.json.JSONModel({
+              specialDates: holidayCalendar.map(holiday => ({
+                  date: new Date(holiday.date),
+                  type: sap.ui.unified.DateType.Type01 // Set the type accordingly
+              }))
+            });
+            sap.ui.getCore().setModel(oModel);
           },
 
           _updateText: function(oCalendar) {
