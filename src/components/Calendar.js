@@ -11,14 +11,13 @@ tmpl.innerHTML = `
     <script id="oView" name="oView" type="sapui5/xmlview">
       <mvc:View
         controllerName="ifm.calendar"
+        xmlns:l="sap.ui.layout"
         xmlns:u="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
-        <Page title="Select milestone date:">
-          <content>
-            <u:Calendar id="calendar" width="100%"/>
-          </content>
-        </Page>
+        <l:VerticalLayout>
+          <u:Calendar id="calendar" width="100%"/>
+        <l:/VerticalLayout>
       </mvc:View>
     </script>
   `;
