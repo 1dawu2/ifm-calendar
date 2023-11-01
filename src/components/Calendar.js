@@ -32,11 +32,7 @@ export default class IFMCalendar extends HTMLElement {
       mode: "open"
     });
 
-    _shadowRoot.appendChild(tmpl.content.cloneNode(true));
-
-    _id = createGuid();
-
-    _shadowRoot.querySelector("#oView").id = _id + "_oView";
+    _shadowRoot.appendChild(tmpl.content.cloneNode(false));
 
     this._export_settings = {};
     this._export_settings.Calendar_Country = "DE";
