@@ -15,9 +15,11 @@ tmpl.innerHTML = `
         xmlns:u="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
-        <l:VerticalLayout>
-          <u:Calendar id="calendar" width="100%"/>
-        <l:/VerticalLayout>
+        <l:VerticalLayout width="100%">
+          <l:content>
+            <u:Calendar id="calendar" width="100%"/>
+          </l:content>
+        </l:VerticalLayout>
       </mvc:View>
     </script>
   `;
