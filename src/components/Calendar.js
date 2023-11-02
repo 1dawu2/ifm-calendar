@@ -123,7 +123,7 @@ export default class IFMCalendar extends HTMLElement {
             var oView = this.getView();
             var oCalendar = oView.byId("calendar");
       
-            var holidayCalendar = that_.hd.getHolidays(2023); // TODO: replace constant selection with year selection
+            var holidayCalendar = that_.hd.getHolidays();
             console.log("holiday calendar 2023");
             console.log(holidayCalendar);            
       
