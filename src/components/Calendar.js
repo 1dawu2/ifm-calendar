@@ -123,29 +123,24 @@ export default class IFMCalendar extends HTMLElement {
             var oView = this.getView();
             var oCalendar = oView.byId("calendar");
       
-            // Example: Adding Special Dates
-            // var aSpecialDates = [
-            //   {
-            //     date: new Date("2023", "11", "1"), // Year, Month (0-based), Day
-            //     type: sap.ui.unified.DateType.Type01 // Example Type01 for New Year
-            //   },
-            //   {
-            //     date: new Date("2023", "31", "10"),
-            //     type: sap.ui.unified.DateType.Type02 // Example Type02 for a specific date
-            //   }
-            //   // Add more special dates as needed
-            // ];
-
-            var aSpecialDates = this._initCalendar();
+            var holidayCalendar = that_.hd.getHolidays(2023); // TODO: replace constant selection with year selection
+            console.log("holiday calendar 2023");
+            console.log(holidayCalendar);            
       
-            var aDateRanges = aSpecialDates.map(function (specialDate) {
-              return new sap.ui.unified.DateTypeRange({
+            var aSpecialDates = holidayCalendar.map(function (holiday) {
+              return {
+                date: new Date(holiday.date),
+                type: "Type01"
+              };
+            });
+      
+            aSpecialDates.forEach(function (specialDate) {
+              var oDateRange = new DateTypeRange({
                 startDate: specialDate.date,
                 type: specialDate.type
               });
+              oCalendar.addSpecialDate(oDateRange);
             });
-      
-            oCalendar.addSpecialDates(aDateRanges);
           },
 
           handleShowSpecialDays: function(oEvent) {
@@ -178,20 +173,6 @@ export default class IFMCalendar extends HTMLElement {
             var oCalendar = this.byId("calendar");
       
             this._updateText(oCalendar);
-          },
-
-          _initCalendar: function() {
-            var holidayCalendar = that_.hd.getHolidays(2023); // TODO: replace constant selection with year selection
-            console.log("holiday calendar 2023");
-            console.log(holidayCalendar);
-            // Create and set the model for special dates
-            const oModel = new sap.ui.model.json.JSONModel({
-              specialDates: holidayCalendar?.map(holiday => ({
-                  date: new Date(holiday.date),
-                  type: sap.ui.unified.CalendarDayType.Type01
-              }))
-            });
-            sap.ui.getCore().setModel(oModel);
           },
 
           _updateText: function(oCalendar) {
