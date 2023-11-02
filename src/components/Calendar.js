@@ -181,10 +181,12 @@ export default class IFMCalendar extends HTMLElement {
           },
 
           _initCalendar: function() {
-            const holidayCalendar = that_.hd.getHolidays(2023); // TODO: replace constant selection with year selection
+            var holidayCalendar = that_.hd.getHolidays(2023); // TODO: replace constant selection with year selection
+            console.log("holiday calendar 2023");
+            console.log(holidayCalendar);
             // Create and set the model for special dates
             const oModel = new sap.ui.model.json.JSONModel({
-              specialDates: holidayCalendar.map(holiday => ({
+              specialDates: holidayCalendar?.map(holiday => ({
                   date: new Date(holiday.date),
                   type: sap.ui.unified.CalendarDayType.Type01
               }))
