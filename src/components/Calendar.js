@@ -186,7 +186,7 @@ export default class IFMCalendar extends HTMLElement {
             const oModel = new sap.ui.model.json.JSONModel({
               specialDates: holidayCalendar.map(holiday => ({
                   date: new Date(holiday.date),
-                  type: new "Type01"
+                  type: sap.ui.unified.CalendarDayType.Type01
               }))
             });
             sap.ui.getCore().setModel(oModel);
