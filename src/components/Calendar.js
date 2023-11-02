@@ -130,12 +130,12 @@ export default class IFMCalendar extends HTMLElement {
             var aSpecialDates = holidayCalendar.map(function (holiday) {
               return {
                 date: new Date(holiday.date),
-                type: "Type01"
+                type: sap.ui.unified.CalendarDayType.Type01
               };
             });
       
             aSpecialDates.forEach(function (specialDate) {
-              var oDateRange = new DateTypeRange({
+              var oDateRange = new sap.ui.unified.DateTypeRange({
                 startDate: specialDate.date,
                 type: specialDate.type
               });
