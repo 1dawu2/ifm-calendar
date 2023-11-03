@@ -21,8 +21,7 @@ tmpl.innerHTML = `
           width="100%"
           class="sapUiSmallMargin">    
             <u:Calendar id="calendar" select="handleCalendarSelect" legend="legend" width="100%"/>
-            <u:CalendarLegend id="legend" standardItems="NonWorkingDay"/>
-            <custom:IllustratedMessage id="holidayMessage" illustrationType="sapIllus-NoActivities" visible="false" type="sap.ui.unified.IllustratedMessageIllustrationType" title="Public Holiday Selected" subtitle="Please select a different date"/>
+            <u:CalendarLegend id="legend" standardItems="NonWorkingDay"/>            
         </VBox>
       </mvc:View>
     </script>
