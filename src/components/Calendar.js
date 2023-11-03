@@ -11,6 +11,7 @@ tmpl.innerHTML = `
       <mvc:View
         controllerName="ifm.calendar"
         xmlns:u="sap.ui.unified"
+        xmlns:custom="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
         <VBox
@@ -21,7 +22,7 @@ tmpl.innerHTML = `
           class="sapUiSmallMargin">    
             <u:Calendar id="calendar" select="handleCalendarSelect" legend="legend" width="100%"/>
             <u:CalendarLegend id="legend" standardItems="NonWorkingDay"/>
-            <u:IllustratedMessage id="holidayMessage" illustrationType="sapIllus-NoActivities" visible="false" type="sap.ui.unified.IllustratedMessageIllustrationType" title="Public Holiday Selected" subtitle="Please select a different date"/>
+            <custom:IllustratedMessage id="holidayMessage" illustrationType="sapIllus-NoActivities" visible="false" type="sap.ui.unified.IllustratedMessageIllustrationType" title="Public Holiday Selected" subtitle="Please select a different date"/>
         </VBox>
       </mvc:View>
     </script>
