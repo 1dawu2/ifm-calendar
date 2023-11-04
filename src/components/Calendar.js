@@ -11,7 +11,6 @@ tmpl.innerHTML = `
       <mvc:View
         controllerName="ifm.calendar"
         xmlns:u="sap.ui.unified"
-        xmlns:custom="sap.ui.unified"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
         <VBox
@@ -21,7 +20,7 @@ tmpl.innerHTML = `
           width="100%"
           class="sapUiSmallMargin">    
             <u:Calendar id="calendar" select="handleCalendarSelect" legend="legend" width="100%"/>
-            <u:CalendarLegend id="legend" standardItems="NonWorkingDay"/>            
+            <u:CalendarLegend id="legend" standardItems="Today"/>            
         </VBox>
       </mvc:View>
     </script>
@@ -115,6 +114,7 @@ export default class IFMCalendar extends HTMLElement {
         
         
           onExit: function() {        
+            this.byId("calendar").removeAllSelectedDates();
           },
 
           _setToday: function() {
