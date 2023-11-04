@@ -2,6 +2,9 @@ let Holidays = require('date-holidays')
 let _shadowRoot;
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
+  <div id="ifm_calendar" name="ifm_calendar">
+    <slot name="content"></slot>
+  </div>
     <script id="oView" name="oView" type="sapui5/xmlview">
       <mvc:View
         controllerName="ifm.calendar"
@@ -125,7 +128,7 @@ export default class IFMCalendar extends HTMLElement {
             var oView = this.getView();
             var oCalendar = oView.byId("calendar");
       
-            var holidayCalendar = that_.hd.getHolidays();
+            var holidayCalendar = that_.hd.getHolidays(2024);
             console.log("holiday calendar 2023");
             console.log(holidayCalendar);            
       
