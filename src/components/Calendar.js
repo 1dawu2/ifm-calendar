@@ -78,7 +78,7 @@ export default class IFMCalendar extends HTMLElement {
 
     let content = document.createElement('div');
     content.slot = "content";
-    // that_.appendChild(content);
+    that_.appendChild(content);
 
     sap.ui.getCore().attachInit(function () {
       "use strict";
