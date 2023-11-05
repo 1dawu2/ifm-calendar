@@ -9,17 +9,15 @@ tmpl.innerHTML = `
       <mvc:View
         controllerName="ifm.calendar"
         xmlns:u="sap.ui.unified"
+        xmlns:layout="sap.ui.layout"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
-        <VBox
-          justifyContent="Center"
-          alignItems="Center"
-          displayInline="true"
-          width="100%"
-          class="sapUiSmallMargin">    
-            <u:Calendar id="calendar" select="handleCalendarSelect" legend="legend" width="100%"/>
-            <u:CalendarLegend id="legend" standardItems="Today"/>            
-        </VBox>
+        <layout:Grid defaultSpan="XL2 L2 M3 S12" class="sapUiSmallMargin">
+          <layout:content>
+            <u:Calendar id="calendar" startDateChange="onStartDateChange" select="handleCalendarSelect" legend="legend" width="100%"/>
+            <u:CalendarLegend id="legend" standardItems="Today"/>
+          </layout:content>          
+        </layout:Grid>
       </mvc:View>
     </script>
   `;
@@ -113,6 +111,15 @@ export default class IFMCalendar extends HTMLElement {
         
           onExit: function() {        
             this.byId("calendar").removeAllSelectedDates();
+          },
+
+          onStartDateChange: function (oEvent) {
+            var oCalendar = oEvent.getSource();
+            var oStartDate = oCalendar.getStartDate();
+            var selectedYear = oStartDate.getFullYear();
+      
+            console.log("Selected year: " + selectedYear);
+            // Do something with the selected year value
           },
 
           _setToday: function() {
