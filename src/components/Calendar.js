@@ -35,6 +35,7 @@ export default class IFMCalendar extends HTMLElement {
 
     this._export_settings = {};
     this._export_settings.Calendar_Country = "DE";
+    this._export_settings.Calendar_Year = new new Date().getFullYear();
     this.hd = new Holidays(this._export_settings.Calendar_Country);
 
   }
@@ -77,7 +78,7 @@ export default class IFMCalendar extends HTMLElement {
 
     let content = document.createElement('div');
     content.slot = "content";
-    that_.appendChild(content);
+    // that_.appendChild(content);
 
     sap.ui.getCore().attachInit(function () {
       "use strict";
@@ -117,9 +118,8 @@ export default class IFMCalendar extends HTMLElement {
             var oCalendar = oEvent.getSource();
             var oStartDate = oCalendar.getStartDate();
             var selectedYear = oStartDate.getFullYear();
-      
-            console.log("Selected year: " + selectedYear);
-            // Do something with the selected year value
+            that._export_settings.Calendar_Year = selectedYear;
+            this._addSpecialDates();
           },
 
           _setToday: function() {
@@ -135,7 +135,7 @@ export default class IFMCalendar extends HTMLElement {
             var oView = this.getView();
             var oCalendar = oView.byId("calendar");
       
-            var holidayCalendar = that_.hd.getHolidays(2024);
+            var holidayCalendar = that_.hd.getHolidays(that_._export_settings.Calendar_Yearexpor);
             console.log("holiday calendar 2023");
             console.log(holidayCalendar);            
       
