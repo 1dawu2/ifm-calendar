@@ -14,7 +14,12 @@ tmpl.innerHTML = `
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
         <VBox alignItems="Center" justifyContent="Center">
-          <u:Calendar id="calendar" startDateChange="onStartDateChange" select="handleCalendarSelect" width="100%"/>
+          <u:Calendar
+            id="calendar"
+            months="2"
+            startDateChange="onStartDateChange"
+            select="handleCalendarSelect"
+            width="100%"/>
           <VBox class="legendBox">
             <HBox alignItems="Center" justifyContent="Center">
               <Label text="Today" design="Bold"/>
@@ -40,11 +45,13 @@ class IFMCalendar extends HTMLElement {
     });
 
     _shadowRoot.appendChild(tmpl.content.cloneNode(true));
-    _id = createGuid();
+    _id = this.createGuid();
     _shadowRoot.querySelector("#oView").id = _id + "_oView";
 
     this._export_settings = {};
     this._export_settings.Calendar_Country = "DE";
+    this._export_settings.Calendar_Visibility = "false";
+    this._export_settings.list = {};
     this._export_settings.Calendar_Year = new Date().getFullYear();
     this.hd = new Holidays(this._export_settings.Calendar_Country);
 
@@ -53,27 +60,50 @@ class IFMCalendar extends HTMLElement {
   onCustomWidgetBeforeUpdate(changedProperties) {
     if ("designMode" in changedProperties) {
       this._designMode = changedProperties["designMode"];
-    }
+    };
+
+    console.log('onCustomWidgetBeforeUpdate called');
+    this._export_settings = { ...this._export_settings, ...changedProperties };
   }
 
   onCustomWidgetAfterUpdate(changedProperties) {
+    console.log('onCustomWidgetAfterUpdate called');
+    if ("sacDataBinding" in changedProperties) {
+      const dataBinding = changedProperties.myDataBinding;
+    };
+
+    if (dataBinding.state === 'success') {
+      this._updateData(dataBinding);
+    };
+
     if ("list" in changedProperties) {
       this._export_settings.Calendar_Country = changedProperties["Calendar_Country"];
-    }
-    buildUI(this);
+      this._export_settings.Calendar_Visibility = changedProperties["Calendar_Visibility"];
+    };
+    this.buildUI(this);
   }
 
   // SETTINGS
   get Calendar_Country() {
     return this._export_settings.Calendar_Country;
   }
+
   set Calendar_Country(value) {
     this._export_settings.Calendar_Country = value;
+  }
+
+  get Calendar_Visibility() {
+    return this._export_settings.Calendar_Visibility;
+  }
+
+  set Calendar_Visibility(value) {
+    this._export_settings.Calendar_Visibility = value;
   }
 
   static get observedAttributes() {
     return [
       "Calendar_Country",
+      "Calendar_Visibility"
     ];
   }
 
@@ -82,140 +112,142 @@ class IFMCalendar extends HTMLElement {
       this[name] = newValue;
     };
   }
-}
-function createGuid() {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
-    let r = Math.random() * 16 | 0,
-      v = c === "x" ? r : (r & 0x3 | 0x8);
-    return v.toString(16);
-  });
-}
 
-function buildUI(that) {
-  var that_ = that;
+  createGuid() {
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, c => {
+      let r = Math.random() * 16 | 0,
+        v = c === "x" ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
 
-  let content = document.createElement('div');
-  content.slot = "content";
-  that_.appendChild(content);
+  buildUI(that) {
+    var that_ = that;
 
-  sap.ui.getCore().attachInit(function () {
-    "use strict";
+    let content = document.createElement('div');
+    content.slot = "content";
+    that_.appendChild(content);
 
-    //### Controller ###
-    sap.ui.define([
-      'sap/ui/core/mvc/Controller'
-    ], function (Controller) {
+    sap.ui.getCore().attachInit(function () {
       "use strict";
 
-      var CalendarType = sap.ui.core.CalendarType;
+      //### Controller ###
+      sap.ui.define([
+        'sap/ui/core/mvc/Controller'
+      ], function (Controller) {
+        "use strict";
 
-      return Controller.extend("ifm.calendar", {
-        oFormatYyyymmdd: null,
-        oFormatYyyy: null,
+        var CalendarType = sap.ui.core.CalendarType;
 
-        onInit: function () {
-          this.oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({ pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian });
-          this.oFormatYyyy = sap.ui.core.format.DateFormat.getInstance({ pattern: "yyyy", calendarType: CalendarType.Gregorian });
-          this._setToday();
-          this._addSpecialDates();
-        },
+        return Controller.extend("ifm.calendar", {
+          oFormatYyyymmdd: null,
+          oFormatYyyy: null,
 
-        onBeforeRendering: function () {
-        },
+          onInit: function () {
+            this.oFormatYyyymmdd = sap.ui.core.format.DateFormat.getInstance({ pattern: "yyyy-MM-dd", calendarType: CalendarType.Gregorian });
+            this.oFormatYyyy = sap.ui.core.format.DateFormat.getInstance({ pattern: "yyyy", calendarType: CalendarType.Gregorian });
+            this._setToday();
+            this._addSpecialDates();
+          },
 
-
-        onAfterRendering: function () {
-        },
+          onBeforeRendering: function () {
+          },
 
 
-        onExit: function () {
-          this.byId("calendar").removeAllSelectedDates();
-        },
+          onAfterRendering: function () {
+          },
 
-        onStartDateChange: function (oEvent) {
-          var oCalendar = oEvent.getSource();
-          var oStartDate = oCalendar.getStartDate();
-          var selectedYear = oStartDate.getFullYear();
-          that._export_settings.Calendar_Year = selectedYear;
-          this._addSpecialDates();
-        },
 
-        _setToday: function () {
-          var oView = this.getView();
-          var oCalendar = oView.byId("calendar");
+          onExit: function () {
+            this.byId("calendar").removeAllSelectedDates();
+          },
 
-          // Set the selected date to the current date
-          var oCurrentDate = new Date();
-          oCalendar.focusDate(oCurrentDate);
-        },
+          onStartDateChange: function (oEvent) {
+            var oCalendar = oEvent.getSource();
+            var oStartDate = oCalendar.getStartDate();
+            var selectedYear = oStartDate.getFullYear();
+            that._export_settings.Calendar_Year = selectedYear;
+            this._addSpecialDates();
+          },
 
-        _addSpecialDates: function () {
-          var oView = this.getView();
-          var oCalendar = oView.byId("calendar");
+          _setToday: function () {
+            var oView = this.getView();
+            var oCalendar = oView.byId("calendar");
 
-          var holidayCalendar = that_.hd.getHolidays(that_._export_settings.Calendar_Yearexpor);
-          console.log("holiday calendar 2023");
-          console.log(holidayCalendar);
+            // Set the selected date to the current date
+            var oCurrentDate = new Date();
+            oCalendar.focusDate(oCurrentDate);
+          },
 
-          var aSpecialDates = holidayCalendar.map(function (holiday) {
-            return {
-              date: new Date(holiday.date),
-              type: sap.ui.unified.CalendarDayType.Type01,
-              description: holiday.name
-            };
-          });
+          _addSpecialDates: function () {
+            var oView = this.getView();
+            var oCalendar = oView.byId("calendar");
 
-          aSpecialDates.forEach(function (specialDate) {
-            var oDateRange = new sap.ui.unified.DateTypeRange({
-              startDate: specialDate.date,
-              type: specialDate.type,
-              tooltip: specialDate.description
+            var holidayCalendar = that_.hd.getHolidays(that_._export_settings.Calendar_Yearexpor);
+            console.log("holiday calendar 2023");
+            console.log(holidayCalendar);
+
+            var aSpecialDates = holidayCalendar.map(function (holiday) {
+              return {
+                date: new Date(holiday.date),
+                type: sap.ui.unified.CalendarDayType.Type01,
+                description: holiday.name
+              };
             });
-            oCalendar.addSpecialDate(oDateRange);
-          });
-        },
 
-        handleCalendarSelect: function (oEvent) {
-          //var oCalendar = oEvent.getSource();
-          var oCalendar = this.byId("calendar");
+            aSpecialDates.forEach(function (specialDate) {
+              var oDateRange = new sap.ui.unified.DateTypeRange({
+                startDate: specialDate.date,
+                type: specialDate.type,
+                tooltip: specialDate.description
+              });
+              oCalendar.addSpecialDate(oDateRange);
+            });
+          },
 
-          this._updateDate(oCalendar);
-        },
+          handleCalendarSelect: function (oEvent) {
+            //var oCalendar = oEvent.getSource();
+            var oCalendar = this.byId("calendar");
 
-        _updateDate: function (oCalendar) {
-          var oText = this.byId("selectedDate");
-          var aSelectedDates = oCalendar.getSelectedDates();
-          var oDate;
-          if (aSelectedDates.length > 0) {
-            oDate = aSelectedDates[0].getStartDate();
-            if (that_.hd.isHoliday(this.oFormatYyyymmdd.format(oDate)) === false) {
-              console.log('check if holidAy: selected day is not a public holiday');
+            this._updateDate(oCalendar);
+          },
+
+          _updateDate: function (oCalendar) {
+            var oText = this.byId("selectedDate");
+            var aSelectedDates = oCalendar.getSelectedDates();
+            var oDate;
+            if (aSelectedDates.length > 0) {
+              oDate = aSelectedDates[0].getStartDate();
+              if (that_.hd.isHoliday(this.oFormatYyyymmdd.format(oDate)) === false) {
+                console.log('check if holidAy: selected day is not a public holiday');
+              } else {
+                console.log('check if holiday: selected day is a public holiday');
+
+              };
             } else {
-              console.log('check if holiday: selected day is a public holiday');
-
+              console.log("no holidays retrieved via API!")
             };
-          } else {
-            console.log("no holidays retrieved via API!")
-          };
-        },
+          },
 
-        // onBtnPress: function() {
-        //   var oCalendar = this.byId("calendar");
+          // onBtnPress: function() {
+          //   var oCalendar = this.byId("calendar");
 
-        //   oCalendar.removeAllSelectedDates();
-        //   oCalendar.addSelectedDate(new sap.ui.unified.DateRange({startDate: sap.ui.core.format.DateFormat.getDateInstance()}));
-        //   this._updateDate(oCalendar);
-        //   oCalendar.focusDate(new Date());
-        // }
+          //   oCalendar.removeAllSelectedDates();
+          //   oCalendar.addSelectedDate(new sap.ui.unified.DateRange({startDate: sap.ui.core.format.DateFormat.getDateInstance()}));
+          //   this._updateDate(oCalendar);
+          //   oCalendar.focusDate(new Date());
+          // }
 
+        });
       });
-    });
 
-    //### THE APP: place the XMLView somewhere into DOM ###
-    var oView = sap.ui.xmlview({
-      viewContent: jQuery(_shadowRoot.getElementById("oView")).html(),
-    });
-    oView.placeAt(content);
+      //### THE APP: place the XMLView somewhere into DOM ###
+      // var oView = sap.ui.xmlview({
+      //   viewContent: jQuery(_shadowRoot.getElementById("oView")).html(),
+      // });
+      // oView.placeAt(content);
 
-  });
+    });
+  }
+
 }
