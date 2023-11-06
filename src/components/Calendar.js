@@ -69,7 +69,7 @@ export default class IFMCalendar extends HTMLElement {
   onCustomWidgetAfterUpdate(changedProperties) {
     console.log('onCustomWidgetAfterUpdate called');
     if ("sacDataBinding" in changedProperties) {
-      const dataBinding = changedProperties.myDataBinding;
+      const dataBinding = changedProperties.sacDataBinding;
     };
 
     if (dataBinding.state === 'success') {
