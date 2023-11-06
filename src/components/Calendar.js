@@ -35,7 +35,7 @@ tmpl.innerHTML = `
     </script>
   `;
 
-class IFMCalendar extends HTMLElement {
+export default class IFMCalendar extends HTMLElement {
 
   constructor() {
     super();
