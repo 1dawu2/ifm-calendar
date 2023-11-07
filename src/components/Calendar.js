@@ -69,12 +69,9 @@ export default class IFMCalendar extends HTMLElement {
   onCustomWidgetAfterUpdate(changedProperties) {
     console.log('onCustomWidgetAfterUpdate called');
     if ("sacDataBinding" in changedProperties) {
-      const dataBinding = changedProperties.sacDataBinding;
+      this._updateData(changedProperties.sacDataBinding);
     };
 
-    if (dataBinding.state === 'success') {
-      this._updateData(dataBinding);
-    };
 
     if ("list" in changedProperties) {
       this._export_settings.Calendar_Country = changedProperties["Calendar_Country"];
