@@ -3,9 +3,6 @@ let _shadowRoot;
 let _id;
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
-  <div id="ifm_calendar" name="ifm_calendar">
-    <slot name="content"></slot>
-  </div>
     <script id="oView" name="oView" type="sapui5/xmlview">
       <mvc:View
         controllerName="ifm.calendar"
@@ -153,9 +150,9 @@ export default class IFMCalendar extends HTMLElement {
   buildUI(that) {
     var that_ = that;
 
-    // let content = document.createElement('div');
-    // content.slot = "content";
-    // that_.appendChild(content);
+    let content = document.createElement('div');
+    content.slot = "content";
+    that_.appendChild(content);
 
     sap.ui.getCore().attachInit(function () {
       "use strict";
@@ -258,32 +255,20 @@ export default class IFMCalendar extends HTMLElement {
             };
           },
 
-          // onBtnPress: function() {
-          //   var oCalendar = this.byId("calendar");
-
-          //   oCalendar.removeAllSelectedDates();
-          //   oCalendar.addSelectedDate(new sap.ui.unified.DateRange({startDate: sap.ui.core.format.DateFormat.getDateInstance()}));
-          //   this._updateDate(oCalendar);
-          //   oCalendar.focusDate(new Date());
-          // }
-
         });
       });
 
-      var oView = sap.ui.xmlview({
-        viewContent: jQuery(_shadowRoot.getElementById("oView")).html(),
-      });
-      var oCalendar = oView.byId("calendar");
       if (that_._export_settings.Calendar_Visibility === "true") {
-        oCalendar.setVisible(true);
+        //### THE APP: place the XMLView somewhere into DOM ###
+        var oView = sap.ui.xmlview({
+          viewContent: jQuery(_shadowRoot.getElementById("oView")).html(),
+        });
         oView.placeAt(content);
+        oCalendar = oView.getElementById("calendar");
+        oCalendar.setVisible(true);
       };
 
-      //### THE APP: place the XMLView somewhere into DOM ###
-      // var oView = sap.ui.xmlview({
-      //   viewContent: jQuery(_shadowRoot.getElementById("oView")).html(),
-      // });
-      // oView.placeAt(content);
+
 
     });
   }
