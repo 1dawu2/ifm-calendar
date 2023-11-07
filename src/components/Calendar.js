@@ -264,7 +264,7 @@ export default class IFMCalendar extends HTMLElement {
           viewContent: jQuery(_shadowRoot.getElementById(_id + "_oView")).html(),
         });
         oView.placeAt(content);
-        oCalendar = oView.getElementById("calendar");
+        oCalendar = oView.byId("calendar");
         oCalendar.setVisible(true);
       };
 
