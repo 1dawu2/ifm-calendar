@@ -261,7 +261,7 @@ export default class IFMCalendar extends HTMLElement {
       if (that_._export_settings.Calendar_Visibility === "true") {
         //### THE APP: place the XMLView somewhere into DOM ###
         var oView = sap.ui.xmlview({
-          viewContent: jQuery(_shadowRoot.getElementById(that_._id + "_oView")).html(),
+          viewContent: jQuery(_shadowRoot.getElementById(_id + "_oView")).html(),
         });
         oView.placeAt(content);
         oCalendar = oView.getElementById("calendar");
