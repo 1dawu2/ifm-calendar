@@ -16,6 +16,7 @@ tmpl.innerHTML = `
         <VBox alignItems="Center" justifyContent="Center">
           <u:Calendar
             id="calendar"
+            visible="false"
             months="2"
             startDateChange="onStartDateChange"
             select="handleCalendarSelect"
@@ -152,9 +153,9 @@ export default class IFMCalendar extends HTMLElement {
   buildUI(that) {
     var that_ = that;
 
-    let content = document.createElement('div');
-    content.slot = "content";
-    that_.appendChild(content);
+    // let content = document.createElement('div');
+    // content.slot = "content";
+    // that_.appendChild(content);
 
     sap.ui.getCore().attachInit(function () {
       "use strict";
@@ -268,6 +269,12 @@ export default class IFMCalendar extends HTMLElement {
 
         });
       });
+
+      var oView = this.getView();
+      var oCalendar = oView.byId("calendar");
+      if (that_._export_settings.Calendar_Visibility === "true") {
+        oCalendar.setVisible(true);
+      };
 
       //### THE APP: place the XMLView somewhere into DOM ###
       // var oView = sap.ui.xmlview({
