@@ -205,13 +205,13 @@ export default class IFMCalendar extends HTMLElement {
             var oCalendar = oView.byId("calendar");
             var oLegend = this.byId("legend");
 
-            var holidayCalendar = that_.hd.getHolidays(that_._export_settings.Calendar_Yearexpor);
+            var holidayCalendar = that_.hd.getHolidays(that_._export_settings.Calendar_Year);
             console.log("holiday calendar 2023");
             console.log(holidayCalendar);
 
             oLegend.addItem(new sap.ui.unified.CalendarLegend({
               type: sap.ui.unified.CalendarDayType.Type01,
-              text : "Non-Working"
+              text : "Non-Working Day"
             }));
 
             var aSpecialDates = holidayCalendar.map(function (holiday) {
