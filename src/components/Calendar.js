@@ -17,20 +17,12 @@ tmpl.innerHTML = `
           <u:Calendar
             id="calendar"
             visible="false"
-            months="2"
+            months="1"
+            legend="legend"
             startDateChange="onStartDateChange"
             select="handleCalendarSelect"
             width="100%"/>
-          <VBox class="legendBox">
-            <HBox alignItems="Center" justifyContent="Center">
-              <Label text="Today" design="Bold"/>
-              <Avatar displaySize="S" src="sap-icon://circle-task-2" displayShape="Circle"/>
-            </HBox>
-            <HBox alignItems="Center" justifyContent="Center">
-              <Label text="Non-working Days"/>
-              <Avatar displaySize="S" src="sap-icon://circle-task" displayShape="Circle"/>
-            </HBox>
-          </VBox>
+          <u:CalendarLegend id="legend"/>
         </VBox>
       </mvc:View>
     </script>
@@ -211,6 +203,12 @@ export default class IFMCalendar extends HTMLElement {
           _addSpecialDates: function () {
             var oView = this.getView();
             var oCalendar = oView.byId("calendar");
+            var oLegend = this.byId("legend");
+
+            oLegend.addItem(new sap.ui.unified.CalendarLegend({
+              type: sap.ui.unified.CalendarDayType.Type01,
+              text : holiday.naem
+            }));
 
             var holidayCalendar = that_.hd.getHolidays(that_._export_settings.Calendar_Yearexpor);
             console.log("holiday calendar 2023");
