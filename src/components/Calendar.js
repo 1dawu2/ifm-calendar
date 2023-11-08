@@ -207,7 +207,7 @@ export default class IFMCalendar extends HTMLElement {
 
             oLegend.addItem(new sap.ui.unified.CalendarLegend({
               type: sap.ui.unified.CalendarDayType.Type01,
-              text : holiday.naem
+              text : holiday.name
             }));
 
             var holidayCalendar = that_.hd.getHolidays(that_._export_settings.Calendar_Yearexpor);
