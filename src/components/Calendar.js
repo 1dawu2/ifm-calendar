@@ -3,6 +3,9 @@ let _shadowRoot;
 let _id;
 let tmpl = document.createElement("template");
 tmpl.innerHTML = `
+    <div id="ifm_calendar" name="ifm_calendar">
+      <slot name="content"></slot>
+    </div>
     <script id="oView" name="oView" type="sapui5/xmlview">
       <mvc:View
         controllerName="ifm.calendar"
