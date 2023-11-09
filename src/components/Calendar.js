@@ -19,6 +19,7 @@ tmpl.innerHTML = `
             visible="false"
             months="1"
             legend="legend"
+            showCurrentDateButton="true"
             startDateChange="onStartDateChange"
             select="handleCalendarSelect"
             width="100%"/>
@@ -169,7 +170,7 @@ export default class IFMCalendar extends HTMLElement {
             this.oFormatYyyy = sap.ui.core.format.DateFormat.getInstance({ pattern: "yyyy", calendarType: CalendarType.Gregorian });
             this._setToday();
             this._addSpecialDates();
-            this._addLegendItems();
+            // this._addLegendItems();
           },
 
           onBeforeRendering: function () {
@@ -190,7 +191,7 @@ export default class IFMCalendar extends HTMLElement {
             var selectedYear = oStartDate.getFullYear();
             that._export_settings.Calendar_Year = selectedYear;
             this._addSpecialDates();
-            this._addLegendItems();
+            // this._addLegendItems();
           },
 
           _setToday: function () {
