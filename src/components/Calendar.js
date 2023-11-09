@@ -201,7 +201,7 @@ export default class IFMCalendar extends HTMLElement {
             // Set the passed list date to the current date
             var oCurrentDate = that_.list//new Date();
 
-            oCalendar.focusDate(oCurrentDate);
+            oCalendar.focusDate(oCurrentDate[0].id);
           },
 
           _addLegendItems: function () {
