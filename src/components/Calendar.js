@@ -169,6 +169,7 @@ export default class IFMCalendar extends HTMLElement {
             this.oFormatYyyy = sap.ui.core.format.DateFormat.getInstance({ pattern: "yyyy", calendarType: CalendarType.Gregorian });
             this._setToday();
             this._addSpecialDates();
+            this._addLegendItems();
           },
 
           onBeforeRendering: function () {
@@ -189,6 +190,7 @@ export default class IFMCalendar extends HTMLElement {
             var selectedYear = oStartDate.getFullYear();
             that._export_settings.Calendar_Year = selectedYear;
             this._addSpecialDates();
+            this._addLegendItems();
           },
 
           _setToday: function () {
@@ -200,19 +202,32 @@ export default class IFMCalendar extends HTMLElement {
             oCalendar.focusDate(oCurrentDate);
           },
 
+          _addLegendItems: function() {
+            var oView = this.getView();
+            var oCalendar = oView.byId("calendar");            
+            var oLegend = this.byId("legend");
+
+            var oTodayLegendItem = new sap.ui.unified.CalendarLegendItem({
+              type: sap.ui.unified.CalendarDayType.Type01,
+              text : "Today",
+              color: "blue"
+            });
+            var oHolidayLegendItem = new sap.ui.unified.CalendarLegendItem({
+              type: sap.ui.unified.CalendarDayType.Type01,
+              text : "Public Holiday",
+              color: "red"
+            });
+            oLegend.addItem(oTodayLegendItem);
+            oLegend.addItem(oHolidayLegendItem);
+          },
+
           _addSpecialDates: function () {
             var oView = this.getView();
-            var oCalendar = oView.byId("calendar");
-            var oLegend = this.byId("legend");
+            var oCalendar = oView.byId("calendar");            
 
             var holidayCalendar = that_.hd.getHolidays(that_._export_settings.Calendar_Year);
             console.log("holiday calendar 2023");
             console.log(holidayCalendar);
-
-            oLegend.addItem(new sap.ui.unified.CalendarLegend({
-              type: sap.ui.unified.CalendarDayType.Type01,
-              text : "Non-Working Day"
-            }));
 
             var aSpecialDates = holidayCalendar.map(function (holiday) {
               return {
