@@ -198,25 +198,26 @@ export default class IFMCalendar extends HTMLElement {
             var oView = this.getView();
             var oCalendar = oView.byId("calendar");
 
-            // Set the selected date to the current date
-            var oCurrentDate = new Date();
+            // Set the passed list date to the current date
+            var oCurrentDate = that_.list//new Date();
+
             oCalendar.focusDate(oCurrentDate);
           },
 
-          _addLegendItems: function() {
-            var oView = this.getView();
-            var oCalendar = oView.byId("calendar");            
+          _addLegendItems: function () {
+            // var oView = this.getView();
+            // var oCalendar = oView.byId("calendar");
             var oLegend = this.byId("legend");
 
             var oTodayLegendItem = new sap.ui.unified.CalendarLegendItem({
               type: sap.ui.unified.CalendarDayType.Type01,
-              text : "Today",
-              color: "blue"
+              text: "Today"
+              // color: "blue"
             });
             var oHolidayLegendItem = new sap.ui.unified.CalendarLegendItem({
               type: sap.ui.unified.CalendarDayType.Type01,
-              text : "Public Holiday",
-              color: "red"
+              text: "Public Holiday"
+              // color: "red"
             });
             oLegend.addItem(oTodayLegendItem);
             oLegend.addItem(oHolidayLegendItem);
@@ -224,7 +225,7 @@ export default class IFMCalendar extends HTMLElement {
 
           _addSpecialDates: function () {
             var oView = this.getView();
-            var oCalendar = oView.byId("calendar");            
+            var oCalendar = oView.byId("calendar");
 
             var holidayCalendar = that_.hd.getHolidays(that_._export_settings.Calendar_Year);
             console.log("holiday calendar 2023");
@@ -255,13 +256,13 @@ export default class IFMCalendar extends HTMLElement {
             this._updateDate(oCalendar);
           },
 
-          _updateDate: function (oCalendar) {
-            var oText = this.byId("selectedDate");
+          _updateDate: function (oCalendar) {            
             var aSelectedDates = oCalendar.getSelectedDates();
             var oDate;
             if (aSelectedDates.length > 0) {
               oDate = aSelectedDates[0].getStartDate();
               if (that_.hd.isHoliday(this.oFormatYyyymmdd.format(oDate)) === false) {
+                // TODO: Message Box
                 console.log('check if holidAy: selected day is not a public holiday');
               } else {
                 console.log('check if holiday: selected day is a public holiday');
