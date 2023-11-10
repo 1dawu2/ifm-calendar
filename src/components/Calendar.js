@@ -11,25 +11,31 @@ tmpl.innerHTML = `
         controllerName="ifm.calendar"
         xmlns:u="sap.ui.unified"
         xmlns:f="sap.f"
+        xmlns:card="sap.f.cards"
         xmlns:layout="sap.ui.layout"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
-        <f:Card>
+        <f:Card class="sapUiMediumMargin" width="300px">
           <f:header>
-            <f:CardHeader title="Calendar Card" subtitle="Subtitle" />
-          </f:header>        
+            <card:Header
+              title="Arrange Dates"
+              subtitle="select a single calendar date"
+              iconSrc="sap-icon://appointment" />
+          </f:header>
           <f:content>
-            <u:Calendar
-              id="calendar"
-              visible="false"
-              months="1"
-              legend="legend"
-              showCurrentDateButton="true"
-              startDateChange="onStartDateChange"
-              select="handleCalendarSelect"
-              width="100%"/>
-            <u:CalendarLegend id="legend"/>
-          </f:content>
+            <VBox alignItems="Center" justifyContent="Center">
+              <u:Calendar
+                id="calendar"
+                visible="false"
+                months="1"
+                legend="legend"
+                showCurrentDateButton="true"
+                startDateChange="onStartDateChange"
+                select="handleCalendarSelect"
+                width="100%"/>
+              <u:CalendarLegend id="legend"/>
+            </VBox>
+          </f:content> 
         </f:Card>
       </mvc:View>
     </script>
