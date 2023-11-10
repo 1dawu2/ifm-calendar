@@ -212,8 +212,8 @@ export default class IFMCalendar extends HTMLElement {
 
             // Set the passed list date to the current date
             // var oCurrentDate = new Date();
-            var oCurrentDate = that_.list.map(item => new Date(item.id));
-            oCalendar.focusDate(oCurrentDate);
+            var oCurrentDate = that_.list.map(item => new Date(item.id));            
+            oCalendar.focusDate(this.oFormatYyyymmdd.format(oCurrentDate));
           },
 
           _addLegendItems: function () {
@@ -240,7 +240,7 @@ export default class IFMCalendar extends HTMLElement {
             var oCalendar = oView.byId("calendar");
 
             var holidayCalendar = that_.hd.getHolidays(that_._export_settings.Calendar_Year);
-            console.log("holiday calendar 2023");
+            console.log("holiday calendar: " + that_._export_settings.Calendar_Year);
             console.log(holidayCalendar);
 
             var aSpecialDates = holidayCalendar.map(function (holiday) {
