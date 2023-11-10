@@ -15,7 +15,7 @@ tmpl.innerHTML = `
         xmlns:layout="sap.ui.layout"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
-        <f:Card class="sapUiMediumMargin" width="300px">
+        <f:Card class="sapUiMediumMargin" width="100%">
           <f:header>
             <card:Header
               title="Arrange Dates"
@@ -182,7 +182,7 @@ export default class IFMCalendar extends HTMLElement {
             this.oFormatYyyy = sap.ui.core.format.DateFormat.getInstance({ pattern: "yyyy", calendarType: CalendarType.Gregorian });
             this._setToday();
             this._addSpecialDates();
-            // this._addLegendItems();
+            this._addLegendItems();
           },
 
           onBeforeRendering: function () {
@@ -203,7 +203,7 @@ export default class IFMCalendar extends HTMLElement {
             var selectedYear = oStartDate.getFullYear();
             that._export_settings.Calendar_Year = selectedYear;
             this._addSpecialDates();
-            // this._addLegendItems();
+            this._addLegendItems();
           },
 
           _setToday: function () {
@@ -212,7 +212,7 @@ export default class IFMCalendar extends HTMLElement {
 
             // Set the passed list date to the current date
             // var oCurrentDate = new Date();
-            var oCurrentDate = that_.list.map(item => new Date(item.id));            
+            var oCurrentDate = that_.list.map(item => new Date(item.id));
             oCalendar.focusDate(this.oFormatYyyymmdd.format(oCurrentDate));
           },
 
@@ -268,14 +268,24 @@ export default class IFMCalendar extends HTMLElement {
             this._updateDate(oCalendar);
           },
 
-          _updateDate: function (oCalendar) {            
+          _prepareListData(listItems) {
+            var sacList = [];
+            sacList.push({ id: listItems, description: listItems });
+            this._export_settings.list = sacList;
+          },
+
+
+          _updateDate: function (oCalendar) {
             var aSelectedDates = oCalendar.getSelectedDates();
             var oDate;
             if (aSelectedDates.length > 0) {
               oDate = aSelectedDates[0].getStartDate();
               if (that_.hd.isHoliday(this.oFormatYyyymmdd.format(oDate)) === true) {
                 var msg = 'Please select a different date, since the current selection is a public holiday';
-                sap.m.MessageBox.warning(msg);
+                var messageBox = new sap.m.MessageBox.warning(msg);
+                messageBox.show();
+              } else {
+                this._prepareListData(this.oFormatYyyymmdd.format(oDate))
               };
             } else {
               console.log("no holidays retrieved via API!")
@@ -294,8 +304,6 @@ export default class IFMCalendar extends HTMLElement {
         var oCalendar = oView.byId("calendar");
         oCalendar.setVisible(true);
       };
-
-
 
     });
   }
