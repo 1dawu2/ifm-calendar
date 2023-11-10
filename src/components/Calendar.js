@@ -271,7 +271,7 @@ export default class IFMCalendar extends HTMLElement {
           _prepareListData(listItems) {
             var sacList = [];
             sacList.push({ id: listItems, description: listItems });
-            this._export_settings.list = sacList;
+            that_._export_settings.list = sacList;
           },
 
 
