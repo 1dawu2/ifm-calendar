@@ -10,21 +10,27 @@ tmpl.innerHTML = `
       <mvc:View
         controllerName="ifm.calendar"
         xmlns:u="sap.ui.unified"
+        xmlns:f="sap.f"
         xmlns:layout="sap.ui.layout"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
-        <VBox alignItems="Center" justifyContent="Center">
-          <u:Calendar
-            id="calendar"
-            visible="false"
-            months="1"
-            legend="legend"
-            showCurrentDateButton="true"
-            startDateChange="onStartDateChange"
-            select="handleCalendarSelect"
-            width="100%"/>
-          <u:CalendarLegend id="legend"/>
-        </VBox>
+        <f:Card>
+          <f:header>
+            <f:CardHeader title="Calendar Card" subtitle="Subtitle" />
+          </f:header>        
+          <f:content>
+            <u:Calendar
+              id="calendar"
+              visible="false"
+              months="1"
+              legend="legend"
+              showCurrentDateButton="true"
+              startDateChange="onStartDateChange"
+              select="handleCalendarSelect"
+              width="100%"/>
+            <u:CalendarLegend id="legend"/>
+          </f:content>
+        </f:Card>
       </mvc:View>
     </script>
   `;
@@ -261,12 +267,9 @@ export default class IFMCalendar extends HTMLElement {
             var oDate;
             if (aSelectedDates.length > 0) {
               oDate = aSelectedDates[0].getStartDate();
-              if (that_.hd.isHoliday(this.oFormatYyyymmdd.format(oDate)) === false) {
-                // TODO: Message Box
-                console.log('check if holidAy: selected day is not a public holiday');
-              } else {
-                console.log('check if holiday: selected day is a public holiday');
-
+              if (that_.hd.isHoliday(this.oFormatYyyymmdd.format(oDate)) === true) {
+                var msg = 'Please select a different date, since the current selection is a public holiday';
+                sap.m.MessageBox.warning(msg);
               };
             } else {
               console.log("no holidays retrieved via API!")
