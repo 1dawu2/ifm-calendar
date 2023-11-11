@@ -69,6 +69,19 @@ export default class IFMCalendar extends HTMLElement {
 
   }
 
+  _firePropertiesChanged(value) {
+    this._export_settings.list = value;
+    console.log("property change");
+    console.log(this._export_settings.list);
+    this.dispatchEvent(new CustomEvent("propertiesChanged", {
+      detail: {
+        properties: {
+          list: value
+        }
+      }
+    }));
+  }
+
   _firedChange() {
     console.log("event fired");
   }
@@ -84,19 +97,35 @@ export default class IFMCalendar extends HTMLElement {
 
   onCustomWidgetAfterUpdate(changedProperties) {
     console.log('onCustomWidgetAfterUpdate called');
+
     if ("sacDataBinding" in changedProperties) {
       this._updateData(changedProperties.sacDataBinding);
     };
 
-
     if ("list" in changedProperties) {
+      this._export_settings.list = changedProperties["list"];
+    }
+
+    if ("Calendar_Country" in changedProperties) {
       this._export_settings.Calendar_Country = changedProperties["Calendar_Country"];
+    };
+
+    if ("Calendar_Visibility" in changedProperties) {
       this._export_settings.Calendar_Visibility = changedProperties["Calendar_Visibility"];
     };
+
     this.buildUI(this);
   }
 
   // SETTINGS
+  get list() {
+    return this._export_settings.list;
+  }
+
+  set list(value) {
+    this._export_settings.list = value;
+  }
+
   get Calendar_Country() {
     return this._export_settings.Calendar_Country;
   }
@@ -116,7 +145,8 @@ export default class IFMCalendar extends HTMLElement {
   static get observedAttributes() {
     return [
       "Calendar_Country",
-      "Calendar_Visibility"
+      "Calendar_Visibility",
+      "list"
     ];
   }
 
@@ -202,7 +232,7 @@ export default class IFMCalendar extends HTMLElement {
           },
 
           onExit: function () {
-            this.byId("calendar").removeAllSelectedDates();            
+            this.byId("calendar").removeAllSelectedDates();
           },
 
           onStartDateChange: function (oEvent) {
@@ -273,7 +303,8 @@ export default class IFMCalendar extends HTMLElement {
           _prepareListData(listItems) {
             var sacList = [];
             sacList.push({ id: listItems, description: listItems });
-            that_._export_settings.list = sacList;
+            that_._firePropertiesChanged(sacList);
+            // that_._export_settings.list = sacList;
           },
 
 
