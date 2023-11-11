@@ -31,8 +31,7 @@ tmpl.innerHTML = `
                 legend="legend"
                 showCurrentDateButton="true"
                 startDateChange="onStartDateChange"
-                select="handleCalendarSelect"
-                width="500"/>
+                select="handleCalendarSelect"/>
               <u:CalendarLegend id="legend"/>
             </VBox>
           </f:content> 
