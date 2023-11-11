@@ -54,6 +54,13 @@ export default class IFMCalendar extends HTMLElement {
     _id = this.createGuid();
     _shadowRoot.querySelector("#oView").id = _id + "_oView";
 
+    // register event listener
+    this.addEventListener("click", event => {
+      var event = new Event("onDateSelect");
+      this._firedChange();
+      this.dispatchEvent(event);
+    });
+
     this._export_settings = {};
     this._export_settings.Calendar_Country = "DE";
     this._export_settings.Calendar_Visibility = "false";
@@ -61,6 +68,10 @@ export default class IFMCalendar extends HTMLElement {
     this._export_settings.Calendar_Year = new Date().getFullYear();
     this.hd = new Holidays(this._export_settings.Calendar_Country);
 
+  }
+
+  _firedChange() {
+    console.log("event fired");
   }
 
   onCustomWidgetBeforeUpdate(changedProperties) {
@@ -183,17 +194,6 @@ export default class IFMCalendar extends HTMLElement {
             this._setToday();
             this._addSpecialDates();
             this._addLegendItems();
-            // register event listener
-            this.addEventListener("click", event => {
-              var event = new Event("onDateSelect");
-              this.firedChange();
-              this.dispatchEvent(event);
-            });
-          },
-
-          // CUSTOM EVENTS
-          _firedChange() {
-
           },
 
           onBeforeRendering: function () {
