@@ -15,7 +15,7 @@ tmpl.innerHTML = `
         xmlns:layout="sap.ui.layout"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
-        <f:Card class="sapUiMediumMargin" width="100%">
+        <f:Card class="sapUiMediumMargin" width="500">
           <f:header>
             <card:Header
               title="Arrange Dates"
@@ -32,7 +32,7 @@ tmpl.innerHTML = `
                 showCurrentDateButton="true"
                 startDateChange="onStartDateChange"
                 select="handleCalendarSelect"
-                width="100%"/>
+                width="500"/>
               <u:CalendarLegend id="legend"/>
             </VBox>
           </f:content> 
@@ -230,17 +230,11 @@ export default class IFMCalendar extends HTMLElement {
             // var oCalendar = oView.byId("calendar");
             var oLegend = this.byId("legend");
 
-            var oTodayLegendItem = new sap.ui.unified.CalendarLegendItem({
-              type: sap.ui.unified.CalendarDayType.Type01,
-              text: "Today"
-              // color: "blue"
-            });
             var oHolidayLegendItem = new sap.ui.unified.CalendarLegendItem({
               type: sap.ui.unified.CalendarDayType.Type01,
               text: "Public Holiday"
               // color: "red"
             });
-            oLegend.addItem(oTodayLegendItem);
             oLegend.addItem(oHolidayLegendItem);
           },
 
