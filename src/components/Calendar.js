@@ -315,7 +315,7 @@ export default class IFMCalendar extends HTMLElement {
               oDate = aSelectedDates[0].getStartDate();
               if (that_.hd.isHoliday(this.oFormatYyyymmdd.format(oDate)) === true) {
                 var msg = 'Please select a different date, since the current selection is a public holiday';
-                var msgBox = new sap.m.MessageBox.warning(msg, {
+                sap.m.MessageBox.warning(msg, {
                   title: "Warning",                                    // default
                   onClose: null,                                       // default
                   styleClass: "",                                      // default
@@ -324,7 +324,6 @@ export default class IFMCalendar extends HTMLElement {
                   initialFocus: null,                                  // default
                   textDirection: sap.ui.core.TextDirection.Inherit     // default
                 });
-                msgBox.show();
               } else {
                 this._prepareListData(this.oFormatYyyymmdd.format(oDate))
               };
