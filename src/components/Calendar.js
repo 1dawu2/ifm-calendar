@@ -15,7 +15,7 @@ tmpl.innerHTML = `
         xmlns:layout="sap.ui.layout"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
-        <f:Card class="sapUiMediumMargin" width="500">
+        <f:Card class="sapUiMediumMargin">
           <f:header>
             <card:Header
               title="Arrange Dates"
