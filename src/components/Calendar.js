@@ -15,7 +15,7 @@ tmpl.innerHTML = `
         xmlns:layout="sap.ui.layout"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
-        <f:Card class="sapUiMediumMargin">
+        <f:Card class="sapUiMediumMargin" width="500">
           <f:header>
             <card:Header
               title="Arrange Dates"
@@ -242,7 +242,7 @@ export default class IFMCalendar extends HTMLElement {
             var selectedYear = oStartDate.getFullYear();
             that._export_settings.Calendar_Year = selectedYear;
             this._addSpecialDates();
-            this._addLegendItems();
+            // this._addLegendItems();
           },
 
           _setToday: function () {
