@@ -233,6 +233,7 @@ export default class IFMCalendar extends HTMLElement {
 
           onExit: function () {
             this.byId("calendar").removeAllSelectedDates();
+            this.getView().destroy();
           },
 
           onStartDateChange: function (oEvent) {
@@ -304,7 +305,6 @@ export default class IFMCalendar extends HTMLElement {
             var sacList = [];
             sacList.push({ id: listItems, description: listItems });
             that_._firePropertiesChanged(sacList);
-            // that_._export_settings.list = sacList;
           },
 
 
@@ -313,8 +313,9 @@ export default class IFMCalendar extends HTMLElement {
             var oDate;
             if (aSelectedDates.length > 0) {
               oDate = aSelectedDates[0].getStartDate();
-              if (that_.hd.isHoliday(this.oFormatYyyymmdd.format(oDate)) === true) {
+              if (that_.hd.isHoliday(this.oFormatYyyymmdd.format(oDate)) === true) {                
                 var msg = 'Please select a different date, since the current selection is a public holiday';
+                console.log(msg);
                 sap.m.MessageBox.warning(msg, {
                   title: "Warning",                                    // default
                   onClose: null,                                       // default
