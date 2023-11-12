@@ -15,27 +15,30 @@ tmpl.innerHTML = `
         xmlns:layout="sap.ui.layout"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
-        <f:Card class="sapUiMediumMargin" width="500">
-          <f:header>
-            <card:Header
-              title="Arrange Dates"
-              subtitle="select a single calendar date"
-              iconSrc="sap-icon://appointment" />
-          </f:header>
-          <f:content>
-            <VBox alignItems="Center" justifyContent="Center">
-              <u:Calendar
-                id="calendar"
-                visible="false"
-                months="1"
-                legend="legend"
-                showCurrentDateButton="true"
-                startDateChange="onStartDateChange"
-                select="handleCalendarSelect"/>
-              <u:CalendarLegend id="legend"/>
-            </VBox>
-          </f:content> 
-        </f:Card>
+        <FlexBox justifyContent="Center" alignItems="Start" class="sapUiResponsiveContentPadding">
+          <f:Card class="sapUiMediumMargin">
+            <f:header>
+              <card:Header
+                title="Arrange Dates"
+                subtitle="select a single calendar date"
+                iconSrc="sap-icon://appointment" />
+            </f:header>
+            <f:content>
+              <VBox alignItems="Center" justifyContent="Center">
+                <u:Calendar
+                  id="calendar"
+                  visible="false"
+                  width="100%"
+                  months="1"
+                  legend="legend"
+                  showCurrentDateButton="true"
+                  startDateChange="onStartDateChange"
+                  select="handleCalendarSelect"/>
+                <u:CalendarLegend id="legend"/>
+              </VBox>
+            </f:content> 
+          </f:Card>
+        </FlexBox>
       </mvc:View>
     </script>
   `;
