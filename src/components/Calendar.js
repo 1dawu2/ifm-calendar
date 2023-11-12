@@ -313,13 +313,8 @@ export default class IFMCalendar extends HTMLElement {
             var oDate;
             if (aSelectedDates.length > 0) {
               oDate = aSelectedDates[0].getStartDate();
-              console.log("selected date");
-              console.log(oDate);
-              console.log("is holiday");
-              console.log(that_.hd.isHoliday(oDate));
-              if (that_.hd.isHoliday(oDate) === true) {                
+              if (that_.hd.isHoliday(oDate) !== false) {                
                 var msg = 'Please select a different date, since the current selection is a public holiday';
-                console.log(msg);
                 sap.m.MessageBox.warning(msg, {
                   title: "Warning",                                    // default
                   onClose: null,                                       // default
@@ -336,7 +331,6 @@ export default class IFMCalendar extends HTMLElement {
               console.log("no holidays retrieved via API!")
             };
           },
-
         });
       });
 
