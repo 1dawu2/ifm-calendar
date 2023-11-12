@@ -15,8 +15,8 @@ tmpl.innerHTML = `
         xmlns:layout="sap.ui.layout"
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m">
-        <FlexBox justifyContent="Center" alignItems="Start" class="sapUiResponsiveContentPadding">
-          <f:Card class="sapUiMediumMargin">
+        <FlexBox justifyContent="Center" alignItems="Start">
+          <f:Card>
             <f:header>
               <card:Header
                 title="Arrange Dates"
@@ -237,6 +237,7 @@ export default class IFMCalendar extends HTMLElement {
           onExit: function () {
             this.byId("calendar").removeAllSelectedDates();
             this.getView().destroy();
+            console.log("onExit has been triggered");
           },
 
           onStartDateChange: function (oEvent) {
