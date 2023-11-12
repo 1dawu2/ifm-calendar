@@ -313,7 +313,7 @@ export default class IFMCalendar extends HTMLElement {
             var oDate;
             if (aSelectedDates.length > 0) {
               oDate = aSelectedDates[0].getStartDate();
-              if (that_.hd.isHoliday(this.oFormatYyyymmdd.format(oDate)) === true) {                
+              if (that_.hd.isHoliday(oDate) === true) {                
                 var msg = 'Please select a different date, since the current selection is a public holiday';
                 console.log(msg);
                 sap.m.MessageBox.warning(msg, {
