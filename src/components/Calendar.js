@@ -14,9 +14,10 @@ tmpl.innerHTML = `
         xmlns:card="sap.f.cards"
         xmlns:layout="sap.ui.layout"
         xmlns:mvc="sap.ui.core.mvc"
-        xmlns="sap.m">
+        xmlns="sap.m"
+        height="100%">
         <FlexBox justifyContent="Center" alignItems="Start">
-          <f:Card>
+          <f:Card width="400px" class="sapUiMediumMargin">
             <f:header>
               <card:Header
                 title="Arrange Dates"
