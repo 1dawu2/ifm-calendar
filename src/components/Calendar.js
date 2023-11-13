@@ -16,7 +16,7 @@ tmpl.innerHTML = `
         xmlns:mvc="sap.ui.core.mvc"
         xmlns="sap.m"
         height="100%">
-        <FlexBox justifyContent="Center" alignItems="Start">
+        <FlexBox justifyContent="Center" alignItems="Start" width="400px" height="500px">
           <f:Card width="400px" class="sapUiMediumMargin">
             <f:header>
               <card:Header
