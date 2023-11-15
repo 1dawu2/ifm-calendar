@@ -256,7 +256,7 @@ export default class IFMCalendar extends HTMLElement {
 
             // Set the passed list date to the current date
             // var oCurrentDate = new Date();
-            var oCurrentDate = that_._export_settings.list.map(item => new Date(item.id));
+            var oCurrentDate = that_._export_settings.list[0].id;
             oCalendar.focusDate(this.oFormatYyyymmdd.format(oCurrentDate));
           },
 
